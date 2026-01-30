@@ -1,0 +1,110 @@
+/**
+ * Add to Favourite Module Frontend Styles
+ */
+
+.hj-favourite-module {
+	display: inline-block;
+}
+
+.hj-favourite-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	text-decoration: none;
+	cursor: pointer;
+	border: none;
+	outline: none;
+	font-family: inherit;
+	line-height: 1;
+	white-space: nowrap;
+	vertical-align: middle;
+	transition: all 0.3s ease;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	
+	/* Default styles that can be overridden */
+	background-color: #e74c3c;
+	color: #ffffff;
+	padding: 12px 24px;
+	border-radius: 6px;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.hj-favourite-btn:hover {
+	text-decoration: none;
+	transform: translateY(-1px);
+}
+
+.hj-favourite-btn:active {
+	transform: translateY(0);
+}
+
+.hj-favourite-btn:focus {
+	outline: 2px solid rgba(231, 76, 60, 0.3);
+	outline-offset: 2px;
+}
+
+.hj-btn-icon {
+	display: inline-flex;
+	align-items: center;
+	font-size: inherit;
+}
+
+.hj-btn-text {
+	display: inline-flex;
+	align-items: center;
+}
+
+/* Icon spacing adjustments */
+.hj-favourite-btn .hj-btn-icon + .hj-btn-text {
+	margin-left: 0.5rem;
+}
+
+.hj-favourite-btn .hj-btn-text + .hj-btn-icon {
+	margin-left: 0.5rem;
+}
+
+/* Click animation */
+.hj-favourite-btn.hj-btn-clicked {
+	transform: scale(0.95);
+}
+
+.hj-favourite-btn .hj-btn-icon {
+	transition: all 0.3s ease;
+}
+
+/* Success state animation */
+.hj-favourite-btn .hj-btn-icon.fa-check {
+	color: #27ae60;
+	animation: pulse 0.5s ease-in-out;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.2);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+	.hj-favourite-btn {
+		padding: 10px 20px;
+		font-size: 13px;
+	}
+}
+
+@media (max-width: 480px) {
+	.hj-favourite-btn {
+		padding: 8px 16px;
+		font-size: 12px;
+	}
+}
