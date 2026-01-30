@@ -162,22 +162,21 @@
 			const goalId = this.goalSelect.val();
 			console.log(goalId);
 			if (goalId) {
-			// Save goal ID and API token to localStorage for iframe compatibility
-			localStorage.setItem('hj_current_goal_id', goalId);
-			
-			// Save API token if available
-			const token = this.getApiToken();
-			if (token) {
-				localStorage.setItem('hj_api_token', token);
-			}
-			
-			window.location.href = '/edit-goal?goal_id=' + goalId;
-		} else {
-			alert(this.getTranslation('navigateToGoalEditing'));
-		}
-				if (goalId) {
-					this.updateGoalStatus(goalId, 'completed');
+				// Save goal ID and API token to localStorage for iframe compatibility
+				localStorage.setItem('hj_current_goal_id', goalId);
+
+				// Save API token if available
+				const token = this.getApiToken();
+				if (token) {
+					localStorage.setItem('hj_api_token', token);
 				}
+
+				window.location.href = '/edit-goal?goal_id=' + goalId;
+			} else {
+				alert(this.getTranslation('navigateToGoalEditing'));
+			}
+			if (goalId) {
+				this.updateGoalStatus(goalId, 'completed');
 			}
 		}
 
@@ -241,7 +240,7 @@
 
 					this.showToast(errorMessage, 'error');
 				});
-		} 
+		}
 		handleSliderStart(e) {
 			e.preventDefault();
 			const thumb = $(e.target);
@@ -427,6 +426,7 @@
 		}
 
 		submitCheckIn(data) {
+			console.log("checkin submission initialised");
 			return new Promise((resolve, reject) => {
 				$.ajax({
 					url: '/wp-json/healthyjoint/v1/checkins',
@@ -434,6 +434,7 @@
 					contentType: 'application/json',
 					data: JSON.stringify(data),
 					beforeSend: (xhr) => {
+						console.log('checking checkin submission');
 						const token = this.getApiToken();
 						if (token) {
 							xhr.setRequestHeader('X-HJ-API-KEY', token);
@@ -566,24 +567,37 @@
 		}
 
 		getApiToken() {
+			console.log("Init checkin get token");
 			// Get API token from localized script
 			if (typeof hjCheckIn !== 'undefined' && hjCheckIn.apiToken) {
 				return hjCheckIn.apiToken;
 			}
-
+			 console.log("No token in", hjCheckIn, "trying element");
 			// Fallback to meta tag
 			const tokenElement = $('meta[name="hj-api-token"]');
 			if (tokenElement.length) {
 				return tokenElement.attr('content');
-		}
+			}
+			console.log("No token in", tokenElement, "trying element");
 
-		// Last resort - try to get from WordPress global
-		if (typeof wpApiSettings !== 'undefined' && wpApiSettings.nonce) {
-			return wpApiSettings.nonce;
-		}
+			// Last resort - try to get from WordPress global
+			if (typeof wpApiSettings !== 'undefined' && wpApiSettings.nonce) {
+				return wpApiSettings.nonce;
+			}
 
-		console.warn(this.getTranslation('wpNonceNotFound'));
-		return '';
+			// check token in local storage
+			const storedToken = localStorage.getItem('hj_api_token');	
+
+				console.log("Checking token in localstorage");
+			if (storedToken) {	
+				console.log("Token found in localstorage:", storedToken);
+				return storedToken;
+
+			}
+			console.log("No token in", tokenElement, "trying element");
+
+			console.warn(this.getTranslation('wpNonceNotFound'));
+			return '';
 		}
 
 		getNewGoalUrl() {
@@ -595,6 +609,17 @@
 			// Fallback to data attribute
 			const form = $('.hj-check-in-form');
 			return form.data('new-goal-url') || '';
+		}
+
+		getRedirectUrl() {
+			// Get redirect URL from module settings or global variable
+			if (typeof hjCheckIn !== 'undefined' && hjCheckIn.redirectUrl) {
+				return hjCheckIn.redirectUrl;
+			}
+
+			// Fallback to data attribute
+			const form = $('.hj-check-in-form');
+			return form.data('redirect-url') || '';
 		}
 
 		getTranslation(key) {
@@ -654,4 +679,4 @@
 	// Initialize the form handler
 	new HJCheckInForm();
 
-}) (jQuery);
+})(jQuery);

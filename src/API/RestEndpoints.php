@@ -718,7 +718,7 @@ class RestEndpoints implements Registrable {
 		}
 		
 		if ( intval( $goal->post_author ) !== $user_id ) {
-			return new \WP_REST_Response( array( 'message' => 'Permission denied' ), 403 );
+			return new \WP_REST_Response( array( 'message' => 'Permission deniedss' ), 403 );
 		}
 
 		$checkins = get_posts(

@@ -1,0 +1,19 @@
+# Development documentation
+DEVELOPMENT_TIMESHEET.md
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node modules (if using npm)
+node_modules/
+
+# Build artifacts
+*.log
+*.tmp
